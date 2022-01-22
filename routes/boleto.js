@@ -1,36 +1,37 @@
-const verifyBilletHasCharacter = (codeBillet) => {
-  //! If the codeBillet has any character or special character, replace with @
-  //! If the const 'hasCharacter' has an @ on any position, the code is invalid
-  const hasCharacter = codeBillet.replace(/[^0-9]/g, '@')
-  return hasCharacter.includes('@') ? true : false;
+//? GET DATA
+const getBarCode = (firstPart, secondPart, thirdPart, fifthPart) => {
+  let codeBar = ''
+  
+  //! Formato do código de barras
+  // Código digitável: AAABC.CCCCX DDDDD.DDDDDY EEEEE.EEEEEZ K UUUUVVVVVVVVVV
+  // Código a ser gerado: AAABXUUUUVVVVVVVVVVCCCCDDDDDDDDDDEEEEEEEEEE
+
+  //? 4 primeiros digitos (AAAB)
+  codeBar += firstPart.substring(0, 4);
+  
+  //? 10º digito (X)
+  codeBar += firstPart.substring(9, 10);
+  
+  //? digitos de vencimento e valor do documento (UUUUVVVVVVVVVV)
+  codeBar += fifthPart;
+  
+  //? restante da primeira parte (C.CCCC)
+  codeBar += firstPart.substring(4, 9);
+
+  //? campo 2 sem o DV (DDDDD.DDDDD)
+  codeBar += secondPart.substring(0, 10);
+  
+  //? campo 3 sem o DV (EEEEE.EEEEE)
+  codeBar += thirdPart.substring(0, 10);
+  
+  return codeBar;
 }
 
-const getCodeFederalInstitution = (code) => {
-  let codeFederalInstitution = []
+const getAmount = (code) => {
+  let amount = parseFloat(code.substring(4));
+  amount = (amount / 100.00).toFixed(2);
   
-  for(let i = 0 ; i < 3 ; i++)
-    codeFederalInstitution.push(code[i]);
-
-  //!Join all array positions to a string, remove all virgules from string and convert the number to int type
-  return codeFederalInstitution.join().replace(/[,]/g, '');
-}
-
-const getCoinCode = (code) => {
-  let coinCode = [];
-  coinCode.push(code[3]);
-  
-  //! Join all array positions to a string, remove all virgules from string and convert the number to int type
-  return coinCode.join().replace(/[,]/g, '');
-}
-
-const daysPassed = (code) => {
-  let codeDaysPassed = []
-  
-  for(let i = 33 ; i < 37 ; i++)
-  codeDaysPassed.push(code[i]);
-
-  //! Join all array positions to a string, remove all virgules from string and convert the number to int type
-  return parseInt(codeDaysPassed.join().replace(/[,]/g, ''));
+  return String(amount);
 }
 
 const getExpirationData = (code) => {
@@ -43,13 +44,50 @@ const getExpirationData = (code) => {
   return JSON.stringify(expirationData).substring(1, 11);
 }
 
+
+//? VERIFYS
+const verifyBilletHasCharacter = (codeBillet) => {
+  //! If the codeBillet has any character or special character, replace with @
+  //! If the const 'hasCharacter' has an @ on any position, the code is invalid
+  const hasCharacter = codeBillet.replace(/[^0-9]/g, '@')
+  return hasCharacter.includes('@') ? true : false;
+}
+
+const daysPassed = (code) => {
+  const numberDays = code.substring(0, 4);
+  return parseInt(numberDays);
+}
+
+const separateCode = (code) => {
+  const firstPart = code.substring(0, 10);
+  const secondPart = code.substring(10, 21);
+  const thirdPart = code.substring(21, 32);
+  const fourthPart = code.substring(32, 33);
+  const fifthPart = code.substring(33);
+
+  return { firstPart, secondPart, thirdPart, fourthPart, fifthPart };
+}
+
+
+//? RETURN BILLET RESPONSE
 const verifyBillet = (code) => {
-  const codeFederalInstitution = getCodeFederalInstitution(code);
-  const coinCode = getCoinCode(code);
-  const expirationData = getExpirationData(code);
-  console.log(codeFederalInstitution)
-  console.log(coinCode)
-  console.log(expirationData)
+  const { firstPart, secondPart, thirdPart, fourthPart, fifthPart } = separateCode(code);
+  
+  const amount = getAmount(fifthPart);
+  const barCode = getBarCode(firstPart, secondPart, thirdPart, fifthPart);
+  const expirationData = getExpirationData(fifthPart);
+  
+  return { barCode, amount, expirationData };
 };
 
-module.exports = { verifyBilletHasCharacter, verifyBillet };
+
+module.exports = {
+  getBarCode, 
+  getAmount, 
+  getExpirationData, 
+  verifyBilletHasCharacter,
+  daysPassed,
+  verifyBillet,
+  separateCode,
+  verifyBillet
+};
