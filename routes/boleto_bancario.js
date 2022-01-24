@@ -15,6 +15,7 @@ const sumValues = (arr) => {
   });
 }
 
+
 //? GET DATA
 const getBarCode = (firstPart, secondPart, thirdPart, fourthPart, fifthPart) => {
   let codeBar = ''
@@ -76,6 +77,16 @@ const getDV = (addedValue, rest) => {
   return DV;
 }
 
+const getDvModule11 = (rest) => {
+  const DV = 11 - rest
+
+  if(DV === 0 || DV === 10 || DV === 11)
+    return 1
+
+  else
+    return DV;
+}
+
 
 //? VERIFYS
 const verifyModule10 = (part1, part2, part3) => {
@@ -114,8 +125,21 @@ const verifyModule10 = (part1, part2, part3) => {
   }
 }
 
-const verifyModule11 = () => {
-  return true;
+const verifyModule11 = (barCode) => {
+  const weights = [4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+
+  const codeDvGeral = parseInt(barCode.splice(4, 1));
+
+  const multipliedNumbers = barCode.map((value, i) => parseInt(value) * weights[i] );
+
+  const allValuesSummed = multipliedNumbers.reduce((acc, value) => parseInt(acc) + parseInt(value));
+
+  const restBy11 = allValuesSummed % 11;
+
+
+  let dvGeral = getDvModule11(restBy11);
+
+  return dvGeral === codeDvGeral ? true : false;
 }
 
 const verifyBilletHasCharacter = (codeBillet) => {
@@ -143,14 +167,15 @@ const checkBankSlip = (code) => {
   const { firstPart, secondPart, thirdPart, fourthPart, fifthPart } = separateCode(code);
   
   const module10 = verifyModule10(firstPart.split(''), secondPart.split(''), thirdPart.split(''));
-  const module11 = verifyModule11();
-
-  if (module10 && module11) {
+  
+  if (module10) {
     const amount = getAmount(fifthPart);
     const barCode = getBarCode(firstPart, secondPart, thirdPart, fourthPart, fifthPart);
     const expirationData = getExpirationData(fifthPart);
     
-    return { barCode, amount, expirationData };
+    const module11 = verifyModule11(barCode.split(''));
+
+    return module11 ? { barCode, amount, expirationData } : {};
   }
   else {
     return {};
