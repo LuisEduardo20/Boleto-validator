@@ -76,78 +76,76 @@ const getDv = (rest) => {
 
 //? FUNCIONALITIES
 const validateDacsMod10 = (part1, part2, part3, part4) => {
-  console.log(part1);
-  // console.log(part2);
-  // console.log(part3);
-  // console.log(part4);
-  
-  // const dacPart1 = parseInt(part1.pop());
-  // const dacPart2 = parseInt(part2.pop());
-  // const dacPart3 = parseInt(part3.pop());
-  // const dacPart4 = parseInt(part4.pop());
+  const dacPart1 = parseInt(part1.pop());
+  const dacPart2 = parseInt(part2.pop());
+  const dacPart3 = parseInt(part3.pop());
+  const dacPart4 = parseInt(part4.pop());
 
-  // const weights = [2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+  const weights = [2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
 
-  // const multipliedValuesPart1 = multiplyValues(part1, weights);
-  // const multipliedValuesPart2 = multiplyValues(part2, weights);
-  // const multipliedValuesPart3 = multiplyValues(part3, weights);
-  // const multipliedValuesPart4 = multiplyValues(part4, weights);
+  const multipliedValuesPart1 = multiplyValues(part1, weights);
+  const multipliedValuesPart2 = multiplyValues(part2, weights);
+  const multipliedValuesPart3 = multiplyValues(part3, weights);
+  const multipliedValuesPart4 = multiplyValues(part4, weights);
 
-  // const summedValuesPart1 = sumValues(multipliedValuesPart1);
-  // const summedValuesPart2 = sumValues(multipliedValuesPart2);
-  // const summedValuesPart3 = sumValues(multipliedValuesPart3);
-  // const summedValuesPart4 = sumValues(multipliedValuesPart4);
+  const summedValuesPart1 = sumValues(multipliedValuesPart1);
+  const summedValuesPart2 = sumValues(multipliedValuesPart2);
+  const summedValuesPart3 = sumValues(multipliedValuesPart3);
+  const summedValuesPart4 = sumValues(multipliedValuesPart4);
 
-  // const rest1 = summedValuesPart1 % 10;
-  // const rest2 = summedValuesPart2 % 10;
-  // const rest3 = summedValuesPart3 % 10;
-  // const rest4 = summedValuesPart4 % 10;
+  const rest1 = summedValuesPart1 % 10;
+  const rest2 = summedValuesPart2 % 10;
+  const rest3 = summedValuesPart3 % 10;
+  const rest4 = summedValuesPart4 % 10;
 
-  // const DAC1 = 10 - rest1;
-  // const DAC2 = 10 - rest2;
-  // const DAC3 = 10 - rest3;
-  // const DAC4 = 10 - rest4;
+  const DAC1 = 10 - rest1;
+  const DAC2 = 10 - rest2;
+  const DAC3 = 10 - rest3;
+  const DAC4 = 10 - rest4;
   
-  // console.log('====================================');
-  // console.log(part1);
-  // console.log('====================================');
-  // console.log(multipliedValuesPart1);
-  // console.log('====================================');
-  // console.log(summedValuesPart1);
-  // console.log('====================================');
-  // console.log(rest1);
-  // console.log('====================================');
-  // console.log(DAC1);
-  
-  // console.log(DAC1, dacPart1);
-  // console.log(DAC1 === dacPart1);
-  
-  // console.log(DAC2, dacPart2);
-  // console.log(DAC2 === dacPart2);
-  
-  // console.log(DAC3, dacPart3);
-  // console.log(DAC3 === dacPart3);
-  
-  // console.log(DAC4, dacPart4);
-  // console.log(DAC4 === dacPart4);
+  const isDac1Validated = DAC1 === dacPart1
+  const isDac2Validated = DAC2 === dacPart2
+  const isDac3Validated = DAC3 === dacPart3
+  const isDac4Validated = DAC4 === dacPart4
+
+  return (isDac1Validated && isDac2Validated && isDac3Validated && isDac4Validated) ? true : false;
 }
 
-const validateDacsMod11 = (code) => {
-  const codeDv1 = parseInt(code.splice(11, 1));
-  const codeDv2 = parseInt(code.splice(22, 1));
-  const codeDv3 = parseInt(code.splice(33, 1));
-  const codeDv4 = parseInt(code.splice(44, 1));
+const validateDacsMod11 = (part1, part2, part3, part4) => {
+  const dacPart1 = parseInt(part1.pop());
+  const dacPart2 = parseInt(part2.pop());
+  const dacPart3 = parseInt(part3.pop());
+  const dacPart4 = parseInt(part4.pop());
+
+  const weights = [4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+
+  const multipliedValuesPart1 = multiplyValues(part1, weights);
+
+  const multipliedValuesPart2 = multiplyValues(part2, weights);
+  const multipliedValuesPart3 = multiplyValues(part3, weights);
+  const multipliedValuesPart4 = multiplyValues(part4, weights);
+
+  const summedValuesPart1 = multipliedValuesPart1.reduce((acc, value) => parseInt(acc) + parseInt(value));
+  const summedValuesPart2 = multipliedValuesPart2.reduce((acc, value) => parseInt(acc) + parseInt(value));
+  const summedValuesPart3 = multipliedValuesPart3.reduce((acc, value) => parseInt(acc) + parseInt(value));
+  const summedValuesPart4 = multipliedValuesPart4.reduce((acc, value) => parseInt(acc) + parseInt(value));
+
+  const rest1 = summedValuesPart1 % 11;
+  const rest2 = summedValuesPart2 % 11;
+  const rest3 = summedValuesPart3 % 11;
+  const rest4 = summedValuesPart4 % 11;
+
+  const DAC1 = getDv(rest1);
+  const DAC2 = getDv(rest2);
+  const DAC3 = getDv(rest3);
+  const DAC4 = getDv(rest4);
   
-  // console.log(codeDv1);
-  // console.log(codeDv2);
-  // console.log(codeDv3);
-  // console.log(codeDv4);
+  const isDac1Validated = DAC1 === dacPart1
+  const isDac2Validated = DAC2 === dacPart2
+  const isDac3Validated = DAC3 === dacPart3
+  const isDac4Validated = DAC4 === dacPart4
 
-  const weights = [4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-  console.log(weights.length);
-
-  const multipliedValues = multiplyValues(code, weights);
-  console.table(multipliedValues);
+  return (isDac1Validated && isDac2Validated && isDac3Validated && isDac4Validated) ? true : false;
 }
 
 const verifyDvMode10 = (barCode) => {
@@ -211,37 +209,42 @@ const checkTicketDealership = (code) => {
 
   const mode = firstPart[2];
 
+  //! Módulo 10
   if(mode === '6' || mode === '7') {
     console.log('mode 10');
 
+    const isDacsValidated = validateDacsMod10(firstPart.split(''), secondPart.split(''), thirdPart.split(''), fourthPart.split(''));
     const isDvValidated = verifyDvMode10( removeDVs(code.split('')) );
 
-    if (isDvValidated) {
-      validateDacsMod10(removeDVs(code.split('')));
-
-      // const barCode = getBarCode(firstPart, secondPart, thirdPart, fourthPart);
+    if (isDacsValidated && isDvValidated) {
+      const barCode = getBarCode(firstPart, secondPart, thirdPart, fourthPart);
+      const amount = getAmount(firstPart, secondPart);
       
       return {
-        barCode: ' ',
-        amount: ' ',
+        barCode,
+        amount,
         expirationData: ' '
       }
     }
+    else {
+      return {};
+    }
   }
   
+  //! Módulo 11
   else if (mode === '8' || mode === '9') {
     console.log('mode 11');
-    
+
+    const isDacsValidated = validateDacsMod11(firstPart.split(''), secondPart.split(''), thirdPart.split(''), fourthPart.split(''));
     const isDvValidated = verifyDvMode11( removeDVs(code.split('')) );
     
-    if (isDvValidated) {
-      validateDacsMod11(code.split(''));
-      
-      // const barCode = getBarCode(firstPart, secondPart, thirdPart, fourthPart);
+    if (isDacsValidated && isDvValidated) {
+      const barCode = getBarCode(firstPart, secondPart, thirdPart, fourthPart);
+      const amount = getAmount(firstPart, secondPart);
 
       return {
-        barCode: ' ',
-        amount: ' ',
+        barCode,
+        amount,
         expirationData: ' '
       }
     }
