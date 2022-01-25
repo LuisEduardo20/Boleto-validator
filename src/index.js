@@ -12,7 +12,10 @@ app.get('/boleto/:code', (req, res) => {
   const codeBillet = verifyBilletHasCharacter(code);
 
   if(!codeBillet) {  //? If codeBillet is 'false' it has only numbers
-    
+
+  //------------------------------------------------------------------------------------------------------
+  //******************************************************************************************************
+  //------------------------------------------------------------------------------------------------------
     if(code.length === 47) {  //? financial slip
       try {
         const { barCode, amount, expirationData } = checkBankSlip(code);
@@ -34,17 +37,37 @@ app.get('/boleto/:code', (req, res) => {
       }
     }
 
+  //------------------------------------------------------------------------------------------------------
+  //******************************************************************************************************
+  //------------------------------------------------------------------------------------------------------
     else if (code.length === 48) {  //? ticket dealer
-      checkTicketDealership(code);
+      try {
+        const { barCode, amount, expirationData } = checkTicketDealership(code);
+  
+        if(!barCode || !amount) {
+          res.status(400).send({error: 'Código inválido'});
+        }
+        else {
+          res.status(200).send({
+            barCode: barCode, 
+            amount: amount, 
+            expirationData: expirationData
+          });
+        }
+      }
+      catch (e) {
+        console.log('error:', e);
+        res.status(500).send({error: 'Algo de errado aconteceu, tente novamente!'});
+      }
     }
 
     else {
-      res.status(404).send({status: 'Código de boleto inválido'});
+      res.status(400).send({status: 'Tamanho do boleto inválido'});
     }
   }
 
   else 
-    res.status(404).send({status: 'Código de boleto inválido'});
+    res.status(400).send({status: 'Código de boleto inválido, digite apenas números'});
 
 });
 
