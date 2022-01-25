@@ -63,15 +63,10 @@ const getExpirationData = (code) => {
 }
 
 const getDV = (addedValue, rest) => {
-  //TODO achar o valor da próxima dezena
   const nextTen = (addedValue / 10).toFixed(0)  * 10 + 10;
-  // console.log('proxima dezena:', nextTen);
 
-  //TODO subtrair pelo resto da disivisão
   const value = nextTen - rest;
-  // console.log(value);
 
-  //TODO excluir a dezena e pegar a unidade
   const DV = parseInt(`${value}`.split('').pop());
 
   return DV;
@@ -96,7 +91,6 @@ const verifyModule10 = (part1, part2, part3) => {
     part3: [1, 2, 1, 2, 1, 2, 1, 2, 1, 2],
   }
 
-  //? Remove os DV do código para comparar depois
   const codeDV1 = parseInt(part1.pop());
   const codeDV2 = parseInt(part2.pop());
   const codeDV3 = parseInt(part3.pop());
